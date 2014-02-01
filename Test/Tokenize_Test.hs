@@ -11,7 +11,7 @@ main :: IO ()
 main = defaultMain tests
 
 simpleTest :: Assertion
-simpleTest = assertEqual "example assertion" 10 tokenize
+simpleTest = assertEqual "example assertion" 1 tokenize
 
 tests =
   [
