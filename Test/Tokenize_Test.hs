@@ -2,7 +2,7 @@ module Main (
     main
  ) where
 
-import Tokenize( tokenize )
+import Tokenize
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
@@ -10,10 +10,18 @@ import Test.HUnit
 main :: IO ()
 main = defaultMain tests
 
-simpleTest :: Assertion
-simpleTest = assertEqual "example assertion" 1 tokenize
+shouldParseSimpleFunction :: Assertion
+shouldParseSimpleFunction = assertEqual "should parse an empty function" 
+	[Function, OpenParens, CloseParens, OpenBrace, CloseBrace]
+	$ tokenize "function(){}"
+
+shouldReturnNothingOnEmptyString :: Assertion
+shouldReturnNothingOnEmptyString = assertEqual "should parse empty string" 
+	[]
+	$ tokenize ""
 
 tests =
   [
-    testCase "example test" simpleTest
+    testCase "example test" shouldParseSimpleFunction,
+    testCase "blah" shouldReturnNothingOnEmptyString
   ]
