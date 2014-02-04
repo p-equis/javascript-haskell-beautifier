@@ -3,6 +3,7 @@ module Main (
  ) where
 
 import Tokenize
+import Token
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
