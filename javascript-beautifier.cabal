@@ -21,10 +21,8 @@ executable javascript-beautifier
 
 Test-suite reference
   Hs-Source-Dirs:       Test, src
-  Main-Is:              TestRunner.hs
+  Main-Is:              Spec.hs
   Type:                 exitcode-stdio-1.0
   build-depends:       base ==4.6.*,
-                       HUnit,
-                       test-framework,
-                       test-framework-hunit,
+                       hspec >= 1.3,
                        containers
