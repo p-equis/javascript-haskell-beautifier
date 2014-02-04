@@ -25,9 +25,15 @@ shouldOmitSpaces = assertEqual "should omit spaces"
 	[OpenBrace, CloseBrace]
 	$ tokenize "{ }"
 
+shouldOmitTabs :: Assertion
+shouldOmitTabs = assertEqual "should omit tabs"
+	[OpenBrace, CloseBrace]
+	$ tokenize "{\t}"
+
 tests =
   [
     testCase "example test" shouldParseSimpleFunction,
     testCase "blah" shouldReturnNothingOnEmptyString,
-    testCase "should omit spaces" shouldOmitSpaces
+    testCase "should omit spaces" shouldOmitSpaces,
+    testCase "should omit tabs" shouldOmitTabs
   ]

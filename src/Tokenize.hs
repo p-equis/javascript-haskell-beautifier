@@ -6,6 +6,7 @@ data Token = Function | OpenParens | CloseParens | OpenBrace | CloseBrace derivi
 
 tokenize :: String -> [Token]
 tokenize (' ':xs) = tokenize xs
+tokenize ('\t':xs) = tokenize xs
 tokenize ('(':xs) = [OpenParens] ++ tokenize xs
 tokenize (')':xs) = [CloseParens] ++ tokenize xs
 tokenize ('{':xs) = [OpenBrace] ++ tokenize xs
