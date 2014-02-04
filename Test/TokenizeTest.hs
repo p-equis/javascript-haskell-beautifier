@@ -1,5 +1,5 @@
-module Main (
-    main
+module TokenizeTest (
+    tests
  ) where
 
 import Tokenize
@@ -7,9 +7,6 @@ import Token
 import Test.Framework
 import Test.Framework.Providers.HUnit
 import Test.HUnit
-
-main :: IO ()
-main = defaultMain tests
 
 shouldParseSimpleFunction :: Assertion
 shouldParseSimpleFunction = assertEqual "should parse an empty function" 
@@ -32,7 +29,7 @@ shouldOmitTabs = assertEqual "should omit tabs"
 	$ tokenize "{\t}"
 
 shouldParseReturnStatement :: Assertion
-shouldParseReturnStatement = assertEqual "should parse an empty function" 
+shouldParseReturnStatement = assertEqual "should parse return statement" 
 	[OpenBrace, Return, CloseBrace]
 	$ tokenize "{ return }"
 
