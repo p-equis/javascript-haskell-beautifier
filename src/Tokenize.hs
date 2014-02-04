@@ -5,6 +5,7 @@ import Data.List
 data Token = Function | OpenParens | CloseParens | OpenBrace | CloseBrace deriving (Eq, Show)
 
 tokenize :: String -> [Token]
+tokenize (' ':xs) = tokenize xs
 tokenize ('(':xs) = [OpenParens] ++ tokenize xs
 tokenize (')':xs) = [CloseParens] ++ tokenize xs
 tokenize ('{':xs) = [OpenBrace] ++ tokenize xs

@@ -20,8 +20,14 @@ shouldReturnNothingOnEmptyString = assertEqual "should parse empty string"
 	[]
 	$ tokenize ""
 
+shouldOmitSpaces :: Assertion
+shouldOmitSpaces = assertEqual "should omit spaces" 
+	[OpenBrace, CloseBrace]
+	$ tokenize "{ }"
+
 tests =
   [
     testCase "example test" shouldParseSimpleFunction,
-    testCase "blah" shouldReturnNothingOnEmptyString
+    testCase "blah" shouldReturnNothingOnEmptyString,
+    testCase "should omit spaces" shouldOmitSpaces
   ]
