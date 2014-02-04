@@ -1,4 +1,6 @@
-module Tokenize where
+module Tokenize (
+	tokenize
+) where
 
 import Prelude hiding (lookup)
 import Data.List hiding (lookup)
