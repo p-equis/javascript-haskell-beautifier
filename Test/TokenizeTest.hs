@@ -33,11 +33,17 @@ shouldParseReturnStatement = assertEqual "should parse return statement"
 	[OpenBrace, Return, CloseBrace]
 	$ tokenize "{ return }"
 
+shouldParseSemiColons :: Assertion
+shouldParseSemiColons = assertEqual "should parse semi colons" 
+	[SemiColon, SemiColon]
+	$ tokenize ";;"
+
 tests =
   [
     testCase "example test" shouldParseSimpleFunction,
     testCase "blah" shouldReturnNothingOnEmptyString,
     testCase "should omit spaces" shouldOmitSpaces,
     testCase "should omit tabs" shouldOmitTabs,
-    testCase "should parse return statement" shouldParseReturnStatement
+    testCase "should parse return statement" shouldParseReturnStatement,
+    testCase "should parse semi colons" shouldParseSemiColons
   ]
