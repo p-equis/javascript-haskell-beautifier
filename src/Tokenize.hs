@@ -1,6 +1,8 @@
 module Tokenize where
 
-import Data.List
+import Prelude hiding (lookup)
+import Data.List hiding (lookup)
+import Data.Map
 
 data Token = Function 
 			| OpenParens 
@@ -11,16 +13,24 @@ data Token = Function
 			deriving (Eq, Show)
 
 tokenize :: String -> [Token]
+tokenize [] = []
 tokenize (' ':xs) = tokenize xs
 tokenize ('\t':xs) = tokenize xs
-tokenize ('(':xs) = [OpenParens] ++ tokenize xs
-tokenize (')':xs) = [CloseParens] ++ tokenize xs
-tokenize ('{':xs) = [OpenBrace] ++ tokenize xs
-tokenize ('}':xs) = [CloseBrace] ++ tokenize xs
-tokenize stream  
-	| "function" `isPrefixOf` stream = [Function] ++ (tokenize remainder)
-	where remainder = drop (length "function") stream
-tokenize stream  
-	| "return" `isPrefixOf` stream = [Return] ++ (tokenize remainder)
-	where remainder = drop (length "return") stream
-tokenize _ = []
+tokenize stream = tokenize' "" stream
+
+tokenize' :: String -> String -> [Token]
+tokenize' accumulator [] = case (lookup accumulator tokens) of 
+															Nothing -> []
+															(Just token) -> [token]
+tokenize' accumulator stream@(x:xs) = maybe keepAccumulating parseToken candidateToken
+	where keepAccumulating = tokenize' (accumulator ++ [x]) xs
+	      parseToken token = [token] ++ (tokenize stream)
+	      candidateToken = lookup accumulator tokens
+
+tokens :: (Map String Token)
+tokens = fromList([("function", Function), 
+	("return", Return),
+	("(", OpenParens),
+	(")", CloseParens),
+	("{", OpenBrace),
+	("}", CloseBrace)])

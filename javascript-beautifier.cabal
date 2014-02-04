@@ -16,7 +16,8 @@ cabal-version:       >=1.8
 executable javascript-beautifier
   main-is:        helloWorld.hs     
   --other-modules:       
-  build-depends:       base ==4.6.*
+  build-depends:       base ==4.6.*,
+                       containers
 
 Test-suite reference
   Hs-Source-Dirs:       Test, src
@@ -25,4 +26,5 @@ Test-suite reference
   build-depends:       base ==4.6.*,
                        HUnit,
                        test-framework,
-                       test-framework-hunit
+                       test-framework-hunit,
+                       containers
