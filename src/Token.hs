@@ -1,4 +1,7 @@
-module Token where
+module Token (
+	Token(..),
+	toToken
+) where
 
 import Data.Map
 import Prelude hiding (lookup)
