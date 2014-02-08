@@ -2,9 +2,6 @@ module Tokenize (
 	tokenize
 ) where
 
-import Prelude hiding (lookup)
-import Data.List hiding (lookup)
-import Data.Map
 import Token
 
 tokenize :: String -> [Token]
