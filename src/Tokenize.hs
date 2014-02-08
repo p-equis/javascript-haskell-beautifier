@@ -11,15 +11,18 @@ tokenize :: String -> [Token]
 tokenize [] = []
 tokenize (' ':xs) = tokenize xs
 tokenize ('\t':xs) = tokenize xs
-tokenize stream = tokenize' "" stream
+tokenize stream = tokenize' emptyAccumulator stream
 
-tokenize' :: String -> String -> [Token]
-tokenize' accumulator [] = 
-	case (toToken accumulator) of 
-			Nothing -> []
-			(Just token) -> [token]
-tokenize' accumulator stream@(x:xs) = 
-	case (toToken accumulator) of 
-			Nothing ->  tokenize' (accumulator ++ [x]) xs
-			(Just token) -> [token] ++ (tokenize stream)
+tokenize' :: Accumulator -> String -> [Token]
+tokenize' (Finished token) stream = [token] ++ tokenize stream
+tokenize' (Unfinished string) (x:xs) = tokenize' (accumulate (string ++ [x])) xs
 
+data Accumulator = Finished Token | Unfinished String
+
+emptyAccumulator :: Accumulator
+emptyAccumulator = Unfinished ""
+
+accumulate :: String -> Accumulator
+accumulate x = case (toToken x) of
+		 			Nothing -> Unfinished x
+		 			(Just token) -> Finished token
