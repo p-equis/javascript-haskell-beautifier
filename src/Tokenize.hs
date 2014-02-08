@@ -11,18 +11,20 @@ tokenize :: String -> [Token]
 tokenize [] = []
 tokenize (' ':xs) = tokenize xs
 tokenize ('\t':xs) = tokenize xs
-tokenize stream = tokenize' emptyAccumulator stream
+tokenize stream = tokenize' emptyToken stream
 
-tokenize' :: Accumulator -> String -> [Token]
+tokenize' :: PartialToken -> String -> [Token]
 tokenize' (Finished token) stream = [token] ++ tokenize stream
 tokenize' (Unfinished string) (x:xs) = tokenize' (accumulate (string ++ [x])) xs
 
-data Accumulator = Finished Token | Unfinished String
+data PartialToken = Finished Token | Unfinished String
 
-emptyAccumulator :: Accumulator
-emptyAccumulator = Unfinished ""
+emptyToken :: PartialToken
+emptyToken = Unfinished ""
 
-accumulate :: String -> Accumulator
-accumulate x = case (toToken x) of
-		 			Nothing -> Unfinished x
-		 			(Just token) -> Finished token
+accumulate :: String -> PartialToken
+accumulate x = fromMaybe (toToken x) x
+
+fromMaybe :: Maybe Token -> String -> PartialToken
+fromMaybe (Just t) _ = Finished t
+fromMaybe Nothing s  = Unfinished s
