@@ -8,11 +8,11 @@ tokenize :: String -> [Token]
 tokenize [] = []
 tokenize (' ':xs) = tokenize xs
 tokenize ('\t':xs) = tokenize xs
-tokenize stream = tokenize' emptyToken stream
+tokenize stream = tokenize' Empty stream
 
 tokenize' :: PartialToken -> String -> [Token]
 tokenize' (Finished token) stream = [token] ++ tokenize stream
-tokenize' (Empty) stream@(x:xs) = case (toToken [x]) of
+tokenize' Empty stream@(x:xs) = case (toToken [x]) of
 	(Just t) -> [t] ++ tokenize xs
 	Nothing  -> tokenize' (Unfinished [x]) xs 
 tokenize' (Unfinished string) (x:xs) = case (toToken [x]) of 
@@ -21,9 +21,6 @@ tokenize' (Unfinished string) (x:xs) = case (toToken [x]) of
 tokenize' (Unfinished string) [] = [Identifier string]
 
 data PartialToken = Finished Token | Unfinished String | Empty
-
-emptyToken :: PartialToken
-emptyToken = Empty
 
 accumulate :: String -> PartialToken
 accumulate x = fromMaybe (toToken x) x
