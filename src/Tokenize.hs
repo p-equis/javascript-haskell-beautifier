@@ -12,7 +12,7 @@ tokenize stream = tokenize' Empty stream
 
 tokenize' :: PartialToken -> String -> [Token]
 tokenize' (Finished token) stream = [token] ++ tokenize stream
-tokenize' Empty stream@(x:xs) = case (toToken [x]) of
+tokenize' Empty (x:xs) = case (toToken [x]) of
 	(Just t) -> [t] ++ tokenize xs
 	Nothing  -> tokenize' (Unfinished [x]) xs 
 tokenize' (Unfinished string) (x:xs) = case (toToken [x]) of 
