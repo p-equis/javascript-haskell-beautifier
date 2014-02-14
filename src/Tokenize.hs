@@ -15,9 +15,11 @@ removeEmptyIdentifiers ts = filter (\x -> not $ isEmptyIdentifier x) ts
 
 tokenize' :: PartialToken -> String -> [Token]
 tokenize' (Finished token) stream = [token] ++ tokenize stream 
-tokenize' (Unfinished string) (x:xs) = case (toToken [x]) of 
-	(Just t) -> [Identifier string, t] ++ tokenize xs
-	Nothing -> tokenize' (accumulate (string ++ [x])) xs
+tokenize' unfinished (x:xs) = lookahead unfinished xs $ accumulate [x]
+
+lookahead :: PartialToken -> String -> PartialToken -> [Token]
+lookahead (Unfinished string) xs (Finished token) = [Identifier string, token] ++ tokenize xs
+lookahead (Unfinished string) xs (Unfinished x) = tokenize' (accumulate (string ++ x)) xs
 
 data PartialToken = Finished Token | Unfinished String | Empty
 
