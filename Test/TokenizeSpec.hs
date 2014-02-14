@@ -24,3 +24,6 @@ spec = do
 
 		it "should parse semi colons" $ do
 			tokenize ";;" `shouldBe` [SemiColon, SemiColon]
+
+		it "should parse identifiers" $ do
+			tokenize "function example()" `shouldBe` [Function, Identifier "example", OpenParens, CloseParens]

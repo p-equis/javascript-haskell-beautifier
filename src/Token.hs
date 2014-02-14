@@ -13,6 +13,7 @@ data Token = Function
 			| CloseBrace 
 			| Return
 			| SemiColon
+			| Identifier String
 			deriving (Eq, Show)
 
 toToken :: String -> Maybe Token
