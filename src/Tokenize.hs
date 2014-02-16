@@ -11,6 +11,7 @@ tokenize ('\t':xs) = tokenize xs
 tokenize ('\n':xs) = tokenize xs
 tokenize ('\"':xs) = tokenizeLiteralString xs $ Current ""
 tokenize ('/':'/':xs) = tokenizeLineComment xs $ Current "//"
+tokenize ('/':'*':xs) = tokenizeBlockComment xs $ Current ""
 tokenize stream    = tokenize' stream $ Unfinished "" 
 
 tokenize' :: String -> PartialToken -> [Token]
@@ -36,6 +37,14 @@ tokenizeLineComment :: String -> Current -> [Token]
 tokenizeLineComment [] (Current s) = [Identifier s]
 tokenizeLineComment ('\n':xs) (Current s) = [Identifier s] ++ tokenize xs
 tokenizeLineComment (x:xs)    (Current s) = tokenizeLineComment xs $ Current $ s ++ [x]
+
+tokenizeBlockComment :: String -> Current -> [Token]
+tokenizeBlockComment [] (Current s) = [blockComment s]
+tokenizeBlockComment ('*':'/':xs) (Current s) = [blockComment s] ++ tokenize xs
+tokenizeBlockComment (x:xs)    (Current s) = tokenizeBlockComment xs $ Current $ s ++ [x]
+
+blockComment :: String -> Token
+blockComment s = Identifier $ "/*" ++ s ++ "*/"
 
 data PartialToken = Finished Token | Unfinished String
 data Current = Current String
