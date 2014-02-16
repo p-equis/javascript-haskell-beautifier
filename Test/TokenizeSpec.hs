@@ -39,17 +39,17 @@ spec = do
 		
 		describe "strings" $ do
 			
-			it "should treat strings as identifiers" $ do
-				tokenize "var example=\"hey\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"hey\""]
+			it "should parse strings" $ do
+				tokenize "var example=\"hey\"" `shouldBe` [Variable, Identifier "example", Assignment, StringLiteral "hey"]
 
 			it "should allow whitespace in strings" $ do
-				tokenize " \"hey there\" " `shouldBe` [Identifier "\"hey there\""]
+				tokenize " \"hey there\" " `shouldBe` [StringLiteral "hey there"]
 
 			it "should treat tokens inside quotes as identifiers, not as tokens" $ do
-				tokenize "var example=\"{\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
+				tokenize "var example=\"{\"" `shouldBe` [Variable, Identifier "example", Assignment, StringLiteral "{"]
 
 			it "should close an open string if it's the very end of the input" $ do
-				tokenize "var example=\"{" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
+				tokenize "var example=\"{" `shouldBe` [Variable, Identifier "example", Assignment, StringLiteral "{"]
 
 		describe "comments" $ do
 			

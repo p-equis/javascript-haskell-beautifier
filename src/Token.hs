@@ -15,6 +15,7 @@ data Token = Function
 			| SemiColon
 			| Variable
 			| Assignment
+			| StringLiteral String
 			| Identifier String
 			deriving (Eq, Show)
 

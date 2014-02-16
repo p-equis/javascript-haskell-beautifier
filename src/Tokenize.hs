@@ -9,7 +9,7 @@ tokenize []        = []
 tokenize (' ':xs)  = tokenize xs
 tokenize ('\t':xs) = tokenize xs
 tokenize ('\n':xs) = tokenize xs
-tokenize ('\"':xs) = tokenizeLiteralString xs $ Current ""
+tokenize ('\"':xs) = tokenizeStringLiteral xs $ Current ""
 tokenize ('/':'/':xs) = tokenizeLineComment xs $ Current "//"
 tokenize ('/':'*':xs) = tokenizeBlockComment xs $ Current ""
 tokenize stream    = tokenize' stream $ Unfinished "" 
@@ -25,13 +25,10 @@ lookahead xs (Current s ) (Next (Finished t))   = [Identifier s, t] ++ tokenize 
 lookahead xs (Current s ) (Next (Unfinished " ")) = [Identifier s] ++ tokenize xs
 lookahead xs (Current s ) (Next (Unfinished x)) = tokenize' xs $ partialToken $ s ++ x
 
-tokenizeLiteralString :: String -> Current -> [Token]
-tokenizeLiteralString [] (Current s) = [quote s]
-tokenizeLiteralString ('\"':xs) (Current s) = [quote s] ++ tokenize xs
-tokenizeLiteralString (x:xs)    (Current s) = tokenizeLiteralString xs $ Current $ s ++ [x]
-
-quote :: String -> Token
-quote s = Identifier $ "\"" ++ s ++ "\""
+tokenizeStringLiteral :: String -> Current -> [Token]
+tokenizeStringLiteral [] (Current s) = [StringLiteral s]
+tokenizeStringLiteral ('\"':xs) (Current s) = [StringLiteral s] ++ tokenize xs
+tokenizeStringLiteral (x:xs)    (Current s) = tokenizeStringLiteral xs $ Current $ s ++ [x]
 
 tokenizeLineComment :: String -> Current -> [Token]
 tokenizeLineComment [] (Current s) = [Identifier s]
