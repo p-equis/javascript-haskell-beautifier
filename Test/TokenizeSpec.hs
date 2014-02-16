@@ -30,6 +30,9 @@ spec = do
 		
 		it "should be able to end in an identifier" $ do
 			tokenize "var example" `shouldBe` [Variable, Identifier "example"]
+		
+		it "should treat strings as identifiers" $ do
+			tokenize "var example=\"hey\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"hey\""]
 
 		it "should parse literal numbers as identifiers" $ do
 			tokenize "function constant() { return 10; }" `shouldBe` [Function, Identifier "constant", OpenParens, CloseParens, OpenBrace,
