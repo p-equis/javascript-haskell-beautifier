@@ -46,6 +46,12 @@ spec = do
 		it "should treat tokens inside quotes as identifiers, not as tokens" $ do
 			tokenize "var example=\"{\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
 
+		it "should treat single-line comments as identifiers" $ do
+			tokenize "var x; // this is x" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x"]
+
+		it "should end single-line comments with an end-of-line character" $ do
+			tokenize "var x; // this is x\n;" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x", SemiColon]
+
 		it "should parse literal numbers as identifiers" $ do
 			tokenize "function constant() { return 10; }" `shouldBe` [Function, Identifier "constant", OpenParens, CloseParens, OpenBrace,
 																	  Return, Identifier "10", SemiColon, CloseBrace]
