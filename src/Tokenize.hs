@@ -9,17 +9,17 @@ tokenize []        = []
 tokenize (' ':xs)  = tokenize xs
 tokenize ('\t':xs) = tokenize xs
 tokenize ('\"':xs) = tokenizeLiteralString xs $ Current ""
-tokenize stream    = tokenize' (Unfinished "") stream
+tokenize stream    = tokenize' stream $ Unfinished "" 
 
-tokenize' :: PartialToken -> String -> [Token]
-tokenize' (Finished t) xs   = [t] ++ tokenize xs 
-tokenize' (Unfinished s) (x:xs) = lookahead (Current s) xs $ Next (accumulate [x])
-tokenize' (Unfinished s) [] = [Identifier s]
+tokenize' :: String -> PartialToken -> [Token]
+tokenize' xs     (Finished t)   = [t] ++ tokenize xs 
+tokenize' (x:xs) (Unfinished s) = lookahead (Current s) xs $ Next $ accumulate [x]
+tokenize' []     (Unfinished s) = [Identifier s]
 
 lookahead :: Current -> String -> Next -> [Token]
 lookahead (Current "") xs (Next (Finished t))   = [t] ++ tokenize xs
 lookahead (Current s)  xs (Next (Finished t))   = [Identifier s, t] ++ tokenize xs
-lookahead (Current s)  xs (Next (Unfinished x)) = tokenize' (accumulate $ s ++ x) xs
+lookahead (Current s)  xs (Next (Unfinished x)) = tokenize' xs $ accumulate $ s ++ x
 
 tokenizeLiteralString :: String -> Current -> [Token]
 tokenizeLiteralString ('\"':xs) (Current s) = [quote s] ++ tokenize xs
