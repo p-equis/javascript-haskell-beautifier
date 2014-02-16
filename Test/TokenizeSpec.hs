@@ -30,6 +30,9 @@ spec = do
 		
 		it "should be able to end in an identifier" $ do
 			tokenize "var example" `shouldBe` [Variable, Identifier "example"]
+	
+		it "should not include trailing whitespace in an identifier" $ do
+			tokenize "var example =" `shouldBe` [Variable, Identifier "example", Assignment]
 		
 		it "should treat strings as identifiers" $ do
 			tokenize "var example=\"hey\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"hey\""]
