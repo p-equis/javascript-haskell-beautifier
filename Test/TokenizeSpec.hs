@@ -54,10 +54,10 @@ spec = do
 		describe "comments" $ do
 			
 			it "should treat single-line comments as identifiers" $ do
-				tokenize "var x; // this is x" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x"]
+				tokenize "var x; // this is x" `shouldBe` [Variable, Identifier "x", SemiColon, LineComment " this is x"]
 
 			it "should end single-line comments with an end-of-line character" $ do
-				tokenize "var x; // this is x\n;" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x", SemiColon]
+				tokenize "var x; // this is x\n;" `shouldBe` [Variable, Identifier "x", SemiColon, LineComment " this is x", SemiColon]
 
 			it "should understand block comments" $ do
 				tokenize "var x; /* x */;" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "/* x */", SemiColon]

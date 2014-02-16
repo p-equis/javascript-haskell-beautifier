@@ -10,7 +10,7 @@ tokenize (' ':xs)  = tokenize xs
 tokenize ('\t':xs) = tokenize xs
 tokenize ('\n':xs) = tokenize xs
 tokenize ('\"':xs) = tokenizeStringLiteral xs $ Current ""
-tokenize ('/':'/':xs) = tokenizeLineComment xs $ Current "//"
+tokenize ('/':'/':xs) = tokenizeLineComment xs $ Current ""
 tokenize ('/':'*':xs) = tokenizeBlockComment xs $ Current ""
 tokenize stream    = tokenize' stream $ Unfinished "" 
 
@@ -31,8 +31,8 @@ tokenizeStringLiteral ('\"':xs) (Current s) = [StringLiteral s] ++ tokenize xs
 tokenizeStringLiteral (x:xs)    (Current s) = tokenizeStringLiteral xs $ Current $ s ++ [x]
 
 tokenizeLineComment :: String -> Current -> [Token]
-tokenizeLineComment [] (Current s) = [Identifier s]
-tokenizeLineComment ('\n':xs) (Current s) = [Identifier s] ++ tokenize xs
+tokenizeLineComment [] (Current s) = [LineComment s]
+tokenizeLineComment ('\n':xs) (Current s) = [LineComment s] ++ tokenize xs
 tokenizeLineComment (x:xs)    (Current s) = tokenizeLineComment xs $ Current $ s ++ [x]
 
 tokenizeBlockComment :: String -> Current -> [Token]
