@@ -25,6 +25,7 @@ lookahead xs (Current s ) (Next (Unfinished " ")) = [Identifier s] ++ tokenize x
 lookahead xs (Current s ) (Next (Unfinished x)) = tokenize' xs $ partialToken $ s ++ x
 
 tokenizeLiteralString :: String -> Current -> [Token]
+tokenizeLiteralString [] (Current s) = [quote s]
 tokenizeLiteralString ('\"':xs) (Current s) = [quote s] ++ tokenize xs
 tokenizeLiteralString (x:xs)    (Current s) = tokenizeLiteralString xs $ Current $ s ++ [x]
 

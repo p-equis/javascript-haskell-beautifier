@@ -48,6 +48,9 @@ spec = do
 			it "should treat tokens inside quotes as identifiers, not as tokens" $ do
 				tokenize "var example=\"{\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
 
+			it "should close an open string if it's the very end of the input" $ do
+				tokenize "var example=\"{" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
+
 		describe "comments" $ do
 			
 			it "should treat single-line comments as identifiers" $ do
