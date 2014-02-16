@@ -8,6 +8,7 @@ tokenize :: String -> [Token]
 tokenize []        = []
 tokenize (' ':xs)  = tokenize xs
 tokenize ('\t':xs) = tokenize xs
+tokenize ('\n':xs) = tokenize xs
 tokenize ('\"':xs) = tokenizeLiteralString xs $ Current ""
 tokenize stream    = tokenize' stream $ Unfinished "" 
 

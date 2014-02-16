@@ -19,6 +19,9 @@ spec = do
 		it "should omit tabs" $ do
 			tokenize "{\t}" `shouldBe` [OpenBrace, CloseBrace]
 
+		it "should omit newline characters" $ do
+			tokenize "{\n}" `shouldBe` [OpenBrace, CloseBrace]
+
 		it "should parse return statement" $ do
 			tokenize "{ return }" `shouldBe` [OpenBrace, Return, CloseBrace]
 
