@@ -37,21 +37,27 @@ spec = do
 		it "should not include trailing whitespace in an identifier" $ do
 			tokenize "var example =" `shouldBe` [Variable, Identifier "example", Assignment]
 		
-		it "should treat strings as identifiers" $ do
-			tokenize "var example=\"hey\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"hey\""]
+		describe "strings" $ do
+			
+			it "should treat strings as identifiers" $ do
+				tokenize "var example=\"hey\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"hey\""]
 
-		it "should allow whitespace in strings" $ do
-			tokenize " \"hey there\" " `shouldBe` [Identifier "\"hey there\""]
+			it "should allow whitespace in strings" $ do
+				tokenize " \"hey there\" " `shouldBe` [Identifier "\"hey there\""]
 
-		it "should treat tokens inside quotes as identifiers, not as tokens" $ do
-			tokenize "var example=\"{\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
+			it "should treat tokens inside quotes as identifiers, not as tokens" $ do
+				tokenize "var example=\"{\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
 
-		it "should treat single-line comments as identifiers" $ do
-			tokenize "var x; // this is x" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x"]
+		describe "comments" $ do
+			
+			it "should treat single-line comments as identifiers" $ do
+				tokenize "var x; // this is x" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x"]
 
-		it "should end single-line comments with an end-of-line character" $ do
-			tokenize "var x; // this is x\n;" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x", SemiColon]
+			it "should end single-line comments with an end-of-line character" $ do
+				tokenize "var x; // this is x\n;" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "// this is x", SemiColon]
 
 		it "should parse literal numbers as identifiers" $ do
 			tokenize "function constant() { return 10; }" `shouldBe` [Function, Identifier "constant", OpenParens, CloseParens, OpenBrace,
 																	  Return, Identifier "10", SemiColon, CloseBrace]
+
+
