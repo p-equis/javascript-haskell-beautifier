@@ -13,6 +13,7 @@ data Token = Function
 			| CloseBrace 
 			| Return
 			| SemiColon
+			| Variable
 			| Identifier String
 			deriving (Eq, Show)
 
@@ -26,4 +27,5 @@ tokens = fromList([("function", Function),
 	("(", OpenParens),
 	(")", CloseParens),
 	("{", OpenBrace),
-	("}", CloseBrace)])
+	("}", CloseBrace),
+	("var", Variable)])

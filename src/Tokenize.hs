@@ -13,13 +13,14 @@ tokenize stream = tokenize' (Unfinished "") stream
 tokenize' :: PartialToken -> String -> [Token]
 tokenize' (Finished t) xs = [t] ++ tokenize xs 
 tokenize' unfinished (x:xs) = lookahead unfinished xs $ accumulate [x]
+tokenize' (Unfinished s) [] = [Identifier s]
 
 lookahead :: PartialToken -> String -> PartialToken -> [Token]
 lookahead (Unfinished "") xs (Finished t) = [t] ++ tokenize xs
 lookahead (Unfinished s) xs (Finished t) = [Identifier s, t] ++ tokenize xs
 lookahead (Unfinished s) xs (Unfinished x) = tokenize' (accumulate (s ++ x)) xs
 
-data PartialToken = Finished Token | Unfinished String | Empty
+data PartialToken = Finished Token | Unfinished String
 
 accumulate :: String -> PartialToken
 accumulate x = fromMaybe (toToken x) x

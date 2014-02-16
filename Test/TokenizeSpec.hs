@@ -27,6 +27,9 @@ spec = do
 
 		it "should parse identifiers" $ do
 			tokenize "function example()" `shouldBe` [Function, Identifier "example", OpenParens, CloseParens]
+		
+		it "should be able to end in an identifier" $ do
+			tokenize "var example" `shouldBe` [Variable, Identifier "example"]
 
 		it "should parse literal numbers as identifiers" $ do
 			tokenize "function constant() { return 10; }" `shouldBe` [Function, Identifier "constant", OpenParens, CloseParens, OpenBrace,
