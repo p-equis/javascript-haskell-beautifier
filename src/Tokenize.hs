@@ -3,6 +3,7 @@ module Tokenize (
 ) where
 
 import Token
+import Data.List
 
 tokenize :: String -> [Token]
 tokenize []        = []
@@ -27,8 +28,9 @@ lookahead xs (Current s ) (Next (Unfinished x)) = tokenize' xs $ partialToken $ 
 
 tokenizeStringLiteral :: String -> Current -> [Token]
 tokenizeStringLiteral [] (Current s) = [StringLiteral s]
-tokenizeStringLiteral ('\"':xs) (Current s) = [StringLiteral s] ++ tokenize xs
-tokenizeStringLiteral (x:xs)    (Current s) = tokenizeStringLiteral xs $ Current $ s ++ [x]
+tokenizeStringLiteral stream@(x:xs)    (Current s) 
+    | "\"" `isPrefixOf` stream = [StringLiteral s] ++ tokenize xs
+    | otherwise = tokenizeStringLiteral xs $ Current $ s ++ [x]
 
 tokenizeLineComment :: String -> Current -> [Token]
 tokenizeLineComment [] (Current s) = [LineComment s]
