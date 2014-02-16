@@ -60,7 +60,7 @@ spec = do
 				tokenize "var x; // this is x\n;" `shouldBe` [Variable, Identifier "x", SemiColon, LineComment " this is x", SemiColon]
 
 			it "should understand block comments" $ do
-				tokenize "var x; /* x */;" `shouldBe` [Variable, Identifier "x", SemiColon, Identifier "/* x */", SemiColon]
+				tokenize "var x; /* x\n\n */;" `shouldBe` [Variable, Identifier "x", SemiColon, BlockComment " x\n\n ", SemiColon]
 
 		it "should parse literal numbers as identifiers" $ do
 			tokenize "function constant() { return 10; }" `shouldBe` [Function, Identifier "constant", OpenParens, CloseParens, OpenBrace,

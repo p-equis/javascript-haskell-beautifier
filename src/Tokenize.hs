@@ -36,12 +36,9 @@ tokenizeLineComment ('\n':xs) (Current s) = [LineComment s] ++ tokenize xs
 tokenizeLineComment (x:xs)    (Current s) = tokenizeLineComment xs $ Current $ s ++ [x]
 
 tokenizeBlockComment :: String -> Current -> [Token]
-tokenizeBlockComment [] (Current s) = [blockComment s]
-tokenizeBlockComment ('*':'/':xs) (Current s) = [blockComment s] ++ tokenize xs
+tokenizeBlockComment [] (Current s) = [BlockComment s]
+tokenizeBlockComment ('*':'/':xs) (Current s) = [BlockComment s] ++ tokenize xs
 tokenizeBlockComment (x:xs)    (Current s) = tokenizeBlockComment xs $ Current $ s ++ [x]
-
-blockComment :: String -> Token
-blockComment s = Identifier $ "/*" ++ s ++ "*/"
 
 data PartialToken = Finished Token | Unfinished String
 data Current = Current String

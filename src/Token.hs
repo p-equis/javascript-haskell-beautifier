@@ -17,6 +17,7 @@ data Token = Function
 			| Assignment
 			| StringLiteral String
 			| LineComment String
+			| BlockComment String
 			| Identifier String
 			deriving (Eq, Show)
 
