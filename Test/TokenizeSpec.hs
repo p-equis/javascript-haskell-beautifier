@@ -34,6 +34,9 @@ spec = do
 		it "should treat strings as identifiers" $ do
 			tokenize "var example=\"hey\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"hey\""]
 
+		it "should treat tokens inside quotes as identifiers, not as tokens" $ do
+			tokenize "var example=\"{\"" `shouldBe` [Variable, Identifier "example", Assignment, Identifier "\"{\""]
+
 		it "should parse literal numbers as identifiers" $ do
 			tokenize "function constant() { return 10; }" `shouldBe` [Function, Identifier "constant", OpenParens, CloseParens, OpenBrace,
 																	  Return, Identifier "10", SemiColon, CloseBrace]
